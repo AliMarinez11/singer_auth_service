@@ -46,3 +46,10 @@ GRANT ALL PRIVILEGES ON SEQUENCE users_id_seq TO auth_user;
 \q
 
 Then it worked! For some reason if you give all permissions to the entire database and then create a table it does not carry over. I need to learn more about this.
+
+Accidentally added .env file to git repo so had to clean the history.
+git rm --cached .env
+git push
+brew install bfg
+bfg --delete-files .env
+git push --force
