@@ -1,0 +1,48 @@
+Terminal History:
+brew install postgresql
+brew services start postgresql
+psql postgres
+
+postgres=# CREATE DATABASE auth_service_db;
+CREATE DATABASE
+postgres=# CREATE USER auth_user WITH PASSWORD 'Largemoney11$$';
+CREATE ROLE
+postgres=# GRANT ALL PRIVILEDGES ON DATABASE auth_service_db TO auth_user;
+ERROR:  syntax error at or near "PRIVILEDGES"
+LINE 1: GRANT ALL PRIVILEDGES ON DATABASE auth_service_db TO auth_us...
+                  ^
+postgres=# GRANT ALL PRIVILEGES ON DATABASE auth_service_db TO auth_user;
+GRANT
+postgres=# \q
+
+mkdir auth_service
+cd auth_service
+npm init -y
+npm install express
+npm install pg
+npm install bcrypt
+npm install jsonwebtoken
+npm install dotenv
+
+manually created a .env file and added database credentials
+
+touch server.js
+
+psql auth_service_db
+CREATE TABLE users ( id SERIAL PRIMARY KEY, username VARCHAR(100) UNIQUE NOT NULL, password_hash VARCHAR(255) NOT NULL );
+\q
+
+I tried to use postman to make a post request to sign up but it didnt work so i chat gpt'd the error and it said i needed to do the following.
+I think everytime you make a new db object you need to add privileges.
+
+psql auth_service_db
+GRANT ALL PRIVILEGES ON TABLE users TO auth_user;
+\q
+
+Then it didnt work again so i needed to do an additional permission adjustment...
+
+psql auth_service_db
+GRANT ALL PRIVILEGES ON SEQUENCE users_id_seq TO auth_user;
+\q
+
+Then it worked! For some reason if you give all permissions to the entire database and then create a table it does not carry over. I need to learn more about this.
